@@ -1,0 +1,961 @@
+.model small
+.stack 100h
+.data
+;R                            ;A                            ;C                                      ;I        ;N                            ;G
+map db 02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh
+db 02Ah,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh
+db 02Ah,00Fh,020h,00Fh,020h,0BCh,020h,0BCh,020h,0BCh,020h,0BCh,020h,0BCh,020h,0BCh,020h,0BCh,020h,0BCh,020h,0BCh,020h,0BCh,00Fh,0BCh,020h,0BCh,020h,0BCh,020h,0BCh,020h,0BCh,020h,0BCh,020h,0BCh,020h,0BCh,020h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh
+db 02Ah,00Fh,020h,00Fh,0C9h,0BCh,0CDh,0BCh,0BBh,0BCh,0C9h,0BCh,0CDh,0BCh,0BBh,0BCh,0C9h,0BCh,0CDh,0BCh,0CDh,0BCh,020h,0BCh,020h,0BCh,0CCh,0BCh,0CDh,0BCh,0BBh,0BCh,0C9h,0BCh,0CDh,0BCh,0BBh,0BCh,020h,0BCh,020h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,0C9h,00Fh,0CDh,00Fh,0CDh,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh
+db 02Ah,00Fh,020h,00Fh,0CCh,0BCh,0CDh,0BCh,0BCh,0BCh,0CCh,0BCh,0CDh,0BCh,0B9h,0BCh,0BAh,0BCh,020h,0BCh,020h,0BCh,020h,0BCh,0BAh,0BCh,0BAh,0BCh,020h,0BCh,0BAh,0BCh,0C8h,0BCh,0CDh,0BCh,0B9h,0BCh,020h,0BCh,020h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,0BAh,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh
+db 02Ah,00Fh,020h,00Fh,0CCh,0BCh,0CDh,0BCh,0BBh,0BCh,020h,0BCh,020h,0BCh,020h,0BCh,0C8h,0BCh,0CDh,0BCh,0CDh,0BCh,020h,0BCh,0BAh,0BCh,020h,0BCh,020h,0BCh,020h,0BCh,0CDh,0BCh,0CDh,0BCh,0BCh,0BCh,020h,0BCh,020h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,0B2h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,0C8h,00Fh,0CDh,00Fh,0BBh,00Fh,0C9h,00Fh,0CDh,00Fh,0CDh,00Fh,0C9h,00Fh,0CDh,00Fh,0BBh,00Fh,0C9h,00Fh,0CDh,00Fh,0BBh,00Fh,0C9h,00Fh,0CDh,00Fh,0BBh,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh
+db 02Ah,00Fh,020h,00Fh,020h,0BCh,020h,0BCh,020h,0BCh,020h,0BCh,020h,0BCh,020h,0BCh,020h,0BCh,020h,0BCh,020h,0BCh,020h,0BCh,020h,0BCh,020h,0BCh,020h,0BCh,020h,0BCh,020h,0BCh,020h,0BCh,020h,0BCh,020h,0BCh,020h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,0B2h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,0BAh,00Fh,0BAh,00Fh,020h,00Fh,020h,00Fh,0BAh,00Fh,020h,00Fh,0BAh,00Fh,0CCh,00Fh,0CDh,00Fh,0BCh,00Fh,0CCh,00Fh,0CDh,00Fh,0BCh,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh
+db 02Ah,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,0B2h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,0CDh,00Fh,0CDh,00Fh,0BCh,00Fh,0C8h,00Fh,0CDh,00Fh,0CDh,00Fh,0C8h,00Fh,0CDh,00Fh,0BCh,00Fh,0CCh,00Fh,0CDh,00Fh,0BBh,00Fh,0C8h,00Fh,0CDh,00Fh,0CDh,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh
+db 02Ah,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,0B2h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh
+db 02Ah,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh
+db 02Ah,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh
+db 02Ah,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh
+db 02Ah,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh
+db 02Ah,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,0B2h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh
+db 02Ah,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,0B2h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh
+db 02Ah,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,0B2h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh
+db 02Ah,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,0B2h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh
+db 02Ah,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh
+db 02Ah,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh
+db 02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh
+db 02Ah,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh
+db 02Ah,00Fh,020h,00Fh,041h,00Fh,06Eh,00Fh,074h,00Fh,06Fh,00Fh,06Eh,00Fh,020h,00Fh,04Bh,00Fh,061h,00Fh,072h,00Fh,061h,00Fh,063h,00Fh,068h,00Fh,075h,00Fh,06Eh,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,0DBh,00Eh,0DBh,00Eh,0DBh,00Eh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,0B2h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh
+db 02Ah,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,035h,00Fh,035h,00Fh,030h,00Fh,035h,00Fh,030h,00Fh,034h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,020h,00Fh,0DBh,00Eh,0DBh,00Eh,0DBh,00Eh,0DBh,00Eh,0DBh,00Eh,0DBh,00Eh,0DBh,00Eh,0DBh,00Eh,0DBh,00Eh,020h,00Fh,0B2h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,020h,00Fh,02Ah,00Fh,041h,00Fh,06Ch,00Fh,06Ch,00Fh,020h,00Fh,072h,00Fh,069h,00Fh,067h,00Fh,068h,00Fh,074h,00Fh,073h,00Fh,020h,00Fh,072h,00Fh,065h,00Fh,073h,00Fh,065h,00Fh,072h,00Fh,076h,00Fh,065h,00Fh,064h,00Fh,02Ah,00Fh,020h,00Fh
+db 02Ah,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,0DBh,00Eh,0DBh,00Eh,0DBh,00Eh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,0B2h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh
+db 02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,020h,00Fh,0DBh,00Eh,0DBh,00Eh,0DBh,00Eh,020h,00Fh,020h,00Fh,020h,00Fh,0DBh,00Eh,0DBh,00Eh,0DBh,00Eh,020h,00Fh,0B2h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,020h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,0B2h,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh,02Ah,00Fh,020h,00Fh
+;carLeft                                                    ;carright                                ;center                                                                                                                                                                                      ;*
+random db 0                        ; вспомогательная переменная для генератора случайных чисел
+rand_res dw 0
+
+LEFT  equ 61h                      ; клавиша "A"
+RIGHT equ 64h                      ; клавиша "D"
+ESC   equ 1bh                      ; клавиша "esc"
+
+SPACE equ 20h
+LINE  equ B2h
+
+game_over_msg db ' ',0BCh,'G',0BCh,'a',0BCh,'m',0BCh,'e',0BCh,' ',0BCh,'O',0BCh,'v',0BCh,'e',0BCh,'r',0BCh,'!',0BCh,' ',0BCh
+
+CAR_LOCATION_FLAG db 0
+RIGHT_CAR_LOCATION_SERVICE_FLAG db 0
+
+ADD_CAR_FLAG db 0
+XOR_CX_REG_FLAG db 0
+ADD_CAR_RIGHT_FLAG db 0
+XOR_CX_REG_RIGHT_FLAG db 0
+CX_VALUE dw 0
+CX_VALUE_RIGHT dw 0
+
+ADD_NEW_CAR_FLAG dw 0
+
+pause_point dw 0
+
+CAR_POINT_FLAG dw 0
+
+POINTS_COUNTER dw 0
+points_str db 20 dup(?)
+LEN dw 0
+
+.code
+
+Rand MACRO min, max                    ; макрос - генератор случайных чисел на основе счетчика времени
+push ax
+push bx
+xor bx, bx
+
+mov ah,00h                         ; читаем значение счетчика в cx:dx
+int 1ah
+xor ax,ax
+mov al,dl                          ; берем то что в dl и делим на (правая граница - левая граница)
+mov random,max
+sub random,min
+div random
+add ah, min                        ; к остатку от деления прибавляем левую границу
+mov bl,ah
+mov rand_res,bx
+pop bx
+pop ax
+endm
+
+start:
+mov ax,@data
+mov ds,ax
+
+mov ax,00
+mov al,03
+int 10h
+
+mov ah, 1                      ; прячем курсор
+mov ch, 20h
+int 10h
+; в es помещаем начало видеопамяти (будем писать туда напрямую)
+push 0B800h
+pop es
+
+mov cx, 0FA0h                 ;отрисовка карты
+mov di, 00h
+lea si, map
+cld
+rep movsb
+
+main_loop:
+mov ah, 01h                        ; проверка буфера клавиатуры, если там пусто то переходи на спавн "яблочек"
+int 16h
+jz draw
+
+mov ah, 00h                        ; считывание символа из буфера клавиатуры
+int 16h
+
+cmp al, RIGHT
+je goto_right                      ; движение направо
+cmp al, LEFT
+je goto_left
+
+cmp al, ESC
+je exit
+
+draw:
+call inc_ADD_FLAG
+call choose_generate_car
+call repaint_line                  ;отрисовка разметки цетра
+jmp repaint_space_for_car          ;отрисовка дороги, вне машины
+
+
+;!!!перерисовка дороги и машин кроме машины игрока
+repaint_space_for_car:
+cmp CAR_LOCATION_FLAG,0
+je repaint_left_car_location               ; в зав-ти от положения машины игрока перерисовывается
+jmp repaint_right_car_loaction             ; либо левый от машины участок дороги, либо правый
+; и участок перед ней
+repaint_left_car_location:
+mov di,0CC2h
+cmp es:[di],0DBh
+je exit
+call repaint_left_part
+call repaint_car_location_proc
+jmp main_loop
+
+repaint_right_car_loaction:
+mov di,0CDAh
+cmp es:[di],0DBh
+je exit
+call repaint_right_part
+call repaint_car_location_proc
+jmp main_loop
+
+
+;repaint left part
+
+;!!!движение машины игрока вправо!!!;
+goto_right:
+cmp CAR_LOCATION_FLAG,1
+je main_loop
+mov di,0D7Ah
+cmp es:[di],0DBh
+je exit
+mov di,0F54h
+cmp es:[di],0DBh
+je exit
+mov di,0F5Ah
+cmp es:[di],0DBh
+je exit
+mov di,0D62h
+mov cx,21
+jmp go_right
+
+go_right:
+cmp cx,21
+je prepair_first_right_section
+cmp cx,22
+je prepair_second_right_section
+cmp cx,23
+je prepair_third_right_section
+cmp cx,24
+je prepair_fourth_right_section
+mov CAR_LOCATION_FLAG,1
+jmp main_loop
+
+prepair_first_right_section:
+xor dx,dx
+jmp first_right_section
+
+first_right_section:
+xor si,si
+mov si,di
+add si,24
+mov ax,es:[di]
+mov es:[si],ax
+mov es:[di],020h
+add di,2
+inc dx
+cmp dx,3
+je past_right_section
+jmp first_right_section
+
+
+prepair_second_right_section:
+add di,148
+xor dx,dx
+jmp second_right_section
+
+second_right_section:
+mov si,di
+add si,24
+mov ax,es:[di]
+mov es:[si],ax
+mov es:[di],020h
+add di,2
+inc dx
+cmp dx,9
+je past_right_section
+jmp second_right_section
+
+prepair_third_right_section:
+add di,148
+xor dx,dx
+jmp third_right_section
+
+third_right_section:
+mov si,di
+add si,24
+mov ax,es:[di]
+mov es:[si],ax
+mov es:[di],020h
+add di,2
+inc dx
+cmp dx,3
+je past_right_section
+jmp third_right_section
+
+prepair_fourth_right_section:
+add di,148
+xor dx,dx
+jmp fourth_right_section
+
+fourth_right_section:
+cmp dx,3
+je miss_right_space
+mov si,di
+add si,24
+mov ax,es:[di]
+mov es:[si],ax
+mov es:[di],020h
+add di,2
+inc dx
+cmp dx,9
+je past_right_section
+jmp fourth_right_section
+
+miss_right_space:
+add dx,3
+add di,6
+jmp fourth_right_section
+
+past_right_section:
+inc cx
+jmp go_right
+
+;!!!движение машины игрока влево
+goto_left:
+cmp CAR_LOCATION_FLAG,0
+je main_loop
+mov di,0D66h
+cmp es:[di],0DBh
+je exit
+mov di,0F46h
+cmp es:[di],0DBh
+je exit
+mov di,0F4Ch
+cmp es:[di],0DBh
+je exit
+mov di,0D7Ah
+mov cx,21
+jmp go_left
+
+go_left:
+cmp cx,21
+je prepair_first_left_section
+cmp cx,22
+je prepair_second_left_section
+cmp cx,23
+je prepair_third_left_section
+cmp cx,24
+je prepair_fourth_left_section
+mov CAR_LOCATION_FLAG,0
+jmp main_loop
+
+prepair_first_left_section:
+xor dx,dx
+jmp first_left_section
+
+first_left_section:
+xor si,si
+mov si,di
+sub si,24
+mov ax,es:[di]
+mov es:[si],ax
+mov es:[di],020h
+add di,2
+inc dx
+cmp dx,3
+je past_left_section
+jmp first_left_section
+
+
+prepair_second_left_section:
+add di,148
+xor dx,dx
+jmp second_left_section
+
+second_left_section:
+mov si,di
+sub si,24
+mov ax,es:[di]
+mov es:[si],ax
+mov es:[di],020h
+add di,2
+inc dx
+cmp dx,9
+je past_left_section
+jmp second_left_section
+
+prepair_third_left_section:
+add di,148
+xor dx,dx
+jmp third_left_section
+
+third_left_section:
+mov si,di
+sub si,24
+mov ax,es:[di]
+mov es:[si],ax
+mov es:[di],020h
+add di,2
+inc dx
+cmp dx,3
+je past_left_section
+jmp third_left_section
+
+prepair_fourth_left_section:
+add di,148
+xor dx,dx
+jmp fourth_left_section
+
+fourth_left_section:
+cmp dx,3
+je miss_left_space
+mov si,di
+sub si,24
+mov ax,es:[di]
+mov es:[si],ax
+mov es:[di],020h
+add di,2
+inc dx
+cmp dx,9
+je past_left_section
+jmp fourth_left_section
+
+miss_left_space:
+add dx,3
+add di,6
+jmp fourth_left_section
+
+past_left_section:
+inc cx
+jmp go_left
+
+exit:
+mov cx, 18h
+mov di, 724h
+lea si, game_over_msg
+cld
+rep movsb
+
+mov ah, 4ch
+int 21h
+
+PROC inc_ADD_FLAG
+inc ADD_NEW_CAR_FLAG
+cmp ADD_NEW_CAR_FLAG,7
+je set_flags
+jmp end_inc_ADD_FLAG
+
+set_flags:
+Rand 1, 3
+cmp rand_res,1
+je set_left_flags
+cmp rand_res,2
+je set_right_flags
+jmp end_inc_ADD_FLAG
+
+set_left_flags:
+mov ADD_CAR_FLAG,1
+mov XOR_CX_REG_FLAG,1
+jmp end_inc_ADD_FLAG
+
+set_right_flags:
+mov ADD_CAR_RIGHT_FLAG,1
+mov XOR_CX_REG_RIGHT_FLAG,1
+
+end_inc_ADD_FLAG:
+ret
+endp
+
+PROC choose_generate_car
+cmp rand_res,1
+je set_left_car
+cmp rand_res,2
+je set_right_car
+jmp end_choose_generate_car
+
+set_left_car:
+call XOR_CX_REG_FLAG_CMP
+call compare_ADD_CAR_FLAG
+jmp end_choose_generate_car          ;сравнение сх
+
+set_right_car:
+call XOR_CX_REG_FLAG_RIGHT_CMP
+call compare_ADD_CAR_RIGHT_FLAG
+jmp end_choose_generate_car
+
+end_choose_generate_car:
+ret
+endp
+
+PROC XOR_CX_REG_FLAG_CMP
+cmp XOR_CX_REG_FLAG,1              ;метка рисующая все
+je first_cx_push
+jmp end_XOR_CX_REG_FLAG                   ;обнуление сх для рисования секций(от 0 до 4)
+
+first_cx_push:
+
+mov CX_VALUE,0                     ;!!!!!!!!!!!!!
+mov XOR_CX_REG_FLAG,0
+inc POINTS_COUNTER
+call REPAINT_CAR_POINTS
+
+end_XOR_CX_REG_FLAG:
+ret
+endp
+
+PROC XOR_CX_REG_FLAG_RIGHT_CMP
+cmp XOR_CX_REG_RIGHT_FLAG,1              ;метка рисующая все
+je first_cx_right_push
+jmp end_XOR_CX_REG_RIGHT_FLAG                   ;обнуление сх для рисования секций(от 0 до 4)
+
+first_cx_right_push:
+
+mov CX_VALUE_RIGHT,0                     ;!!!!!!!!!!!!!
+mov XOR_CX_REG_RIGHT_FLAG,0
+inc POINTS_COUNTER
+call REPAINT_CAR_POINTS
+
+end_XOR_CX_REG_RIGHT_FLAG:
+ret
+endp
+
+PROC compare_ADD_CAR_RIGHT_FLAG
+cmp ADD_CAR_RIGHT_FLAG,1                 ;если флаг говорит, что нужно добавить машину
+je search_right_section                                   ;берем из сх значение
+jmp end_right_compare
+
+search_right_section:
+mov ax,CX_VALUE_RIGHT
+cmp ax,0
+je pre_paint_first_car_right_part           ;в зав-ти от сх рисуем опр секцию машины
+cmp ax,1
+je pre_paint_second_car_right_part
+cmp ax,2
+je pre_paint_first_car_right_part
+cmp ax,3
+je pre_paint_third_car_right_part
+cmp ax,4
+je past_paint_car_right_part
+ret
+
+pre_paint_first_car_right_part:
+call paint_first_car_right_part
+jmp end_right_compare
+
+pre_paint_second_car_right_part:
+call paint_second_car_right_part
+jmp end_right_compare
+
+pre_paint_third_car_right_part:
+call paint_third_car_right_part
+jmp end_right_compare
+
+past_paint_car_right_part:
+call paint_car_part_right_last
+
+end_right_compare:
+ret
+endp
+
+;!!!!рисование секций машины!!!!!;
+
+PROC paint_first_car_right_part
+inc CX_VALUE_RIGHT
+xor di,di
+mov di,84
+xor cx,cx
+
+paint_first_car_part_right_loop:
+mov es:[di],020h
+add di,2
+inc cx
+cmp cx,3
+je paint_my_right_car
+cmp cx,9
+je end_first_right_proc
+jmp paint_first_car_part_loop
+
+paint_my_right_car:
+mov es:[di],0DBh
+add di,2
+inc cx
+cmp cx,6
+je paint_first_car_part_right_loop
+jmp paint_my_right_car
+
+end_first_right_proc:
+ret
+endp
+
+PROC paint_second_car_right_part
+inc CX_VALUE_RIGHT
+xor di,di
+mov di,84
+xor cx,cx
+
+paint_second_car_part_right_loop:
+mov es:[di],0DBh
+add di,2
+inc cx
+cmp cx,9
+je end_second_right_proc
+jmp paint_second_car_part_right_loop
+
+end_second_right_proc:
+ret
+endp
+
+PROC paint_third_car_right_part
+inc CX_VALUE_RIGHT
+xor di,di
+mov di,84
+xor cx,cx
+
+paint_third_car_part_right_loop:
+mov es:[di],0DBh
+add di,2
+inc cx
+cmp cx,3
+je miss_third_car_right_part
+cmp cx,9
+je exit_paint_third_car_part_right_loop
+jmp paint_third_car_part_right_loop
+
+miss_third_car_right_part:
+mov es:[di],020h
+inc cx
+add di,2
+cmp cx,6
+je paint_second_car_part_right_loop
+jmp miss_third_car_right_part
+
+exit_paint_third_car_part_right_loop:
+ret
+endp
+
+PROC paint_car_part_right_last
+inc CX_VALUE_RIGHT
+xor di,di
+mov di,84
+xor cx,cx
+
+paint_car_part_last_right_loop:
+mov es:[di],020h
+add di,2
+inc cx
+cmp cx,9
+je exit_car_part_last_right_loop
+jmp paint_car_part_last_right_loop
+
+exit_car_part_last_right_loop:
+mov ADD_NEW_CAR_FLAG,0
+mov ADD_CAR_RIGHT_FLAG,0
+ret
+endp
+
+PROC compare_ADD_CAR_FLAG
+cmp ADD_CAR_FLAG,1                 ;если флаг говорит, что нужно добавить машину
+je search_section                                   ;берем из сх значение
+jmp end_compare
+
+search_section:
+mov ax,CX_VALUE
+cmp ax,0
+je pre_paint_first_car_part           ;в зав-ти от сх рисуем опр секцию машины
+cmp ax,1
+je pre_paint_second_car_part
+cmp ax,2
+je pre_paint_first_car_part
+cmp ax,3
+je pre_paint_third_car_part
+cmp ax,4
+je past_paint_car_part
+ret
+
+pre_paint_first_car_part:
+call paint_first_car_part
+jmp end_compare
+
+pre_paint_second_car_part:
+call paint_second_car_part
+jmp end_compare
+
+pre_paint_third_car_part:
+call paint_third_car_part
+jmp end_compare
+
+past_paint_car_part:
+call paint_car_part_last
+
+end_compare:
+
+ret
+endp
+
+
+
+;!!!!рисование секций машины!!!!!;
+
+PROC paint_first_car_part
+inc CX_VALUE
+xor di,di
+mov di,60
+xor cx,cx
+
+paint_first_car_part_loop:
+mov es:[di],020h
+add di,2
+inc cx
+cmp cx,3
+je paint_my_car
+cmp cx,9
+je end_first_proc
+jmp paint_first_car_part_loop
+
+paint_my_car:
+mov es:[di],0DBh
+add di,2
+inc cx
+cmp cx,6
+je paint_first_car_part_loop
+jmp paint_my_car
+
+end_first_proc:
+ret
+endp
+
+PROC paint_second_car_part
+inc CX_VALUE
+xor di,di
+mov di,60
+xor cx,cx
+
+paint_second_car_part_loop:
+mov es:[di],0DBh
+add di,2
+inc cx
+cmp cx,9
+je end_second_proc
+jmp paint_second_car_part_loop
+
+end_second_proc:
+ret
+endp
+
+PROC paint_third_car_part
+inc CX_VALUE
+xor di,di
+mov di,60
+xor cx,cx
+
+paint_third_car_part_loop:
+mov es:[di],0DBh
+add di,2
+inc cx
+cmp cx,3
+je miss_third_car_part
+cmp cx,9
+je exit_paint_third_car_part_loop
+jmp paint_third_car_part_loop
+
+miss_third_car_part:
+mov es:[di],020h
+inc cx
+add di,2
+cmp cx,6
+je paint_second_car_part_loop
+jmp miss_third_car_part
+
+exit_paint_third_car_part_loop:
+ret
+endp
+
+PROC paint_car_part_last
+inc CX_VALUE
+xor di,di
+mov di,60
+xor cx,cx
+
+paint_car_part_last_loop:
+mov es:[di],020h
+add di,2
+inc cx
+cmp cx,9
+je exit_car_part_last_loop
+jmp paint_car_part_last_loop
+
+
+exit_car_part_last_loop:
+mov ADD_CAR_FLAG,0
+mov ADD_NEW_CAR_FLAG,0
+ret
+endp
+
+PROC REPAINT_CAR_POINTS                ; отрисовка кол-ва очков игрока на экране
+push bx
+cmp POINTS_COUNTER,2
+jle end_rep_car_double_points
+push ax
+mov ax,POINTS_COUNTER
+sub ax,2
+mov POINTS_COUNTER,ax
+lea bx, POINTS_COUNTER
+lea di, points_str
+call iTOstr                        ; преобразование от числа к строке
+mov cx, LEN
+mov di, 0632h
+lea si, points_str
+cld
+rep movsb
+; отрисовка очков
+end_rep_car_points:
+mov ax,POINTS_COUNTER
+add ax,2
+mov POINTS_COUNTER,ax
+pop ax
+pop bx
+ret
+
+end_rep_car_double_points:
+pop bx
+ret
+endp
+
+PROC iTOstr                             ; процедура перевода числа в строку
+push ax
+push bx
+push cx
+push di
+
+mov ax, [bx]
+mov bx, 10
+xor cx, cx
+
+division:
+xor dx, dx
+div bx
+push dx
+inc cx
+cmp ax, 0
+jne division
+
+mov LEN, cx
+add LEN, cx
+
+save_in_str:
+pop dx
+add dl, 30h
+mov [di], dl
+inc di
+mov [di], 003h
+inc di
+loop save_in_str
+
+pop di
+pop cx
+pop bx
+pop ax
+ret
+endp
+
+PROC repaint_left_part
+mov di,0F54h
+
+pre_repaint_left_part:
+cmp di,0CD4h
+jle exit_from_left_part
+xor cx,cx
+mov si,di
+sub si,160
+jmp repaint_left_part_loop
+
+repaint_left_part_loop:
+mov ax,es:[si]
+mov es:[di],ax
+add di,2
+add si,2
+inc cx
+cmp cx,9
+je past_repaint_left_part
+jmp repaint_left_part_loop
+
+past_repaint_left_part:
+sub di,178
+jmp pre_repaint_left_part
+
+exit_from_left_part:
+ret
+endp
+
+;repaint right part(MAC
+
+PROC repaint_right_part
+mov di,0F3Ch
+
+pre_repaint_right_part:
+cmp di,0CBCh
+jle exit_from_right_part
+xor cx,cx
+mov si,di
+sub si,160
+jmp repaint_right_part_loop
+
+repaint_right_part_loop:
+mov ax,es:[si]
+mov es:[di],ax
+add di,2
+add si,2
+inc cx
+cmp cx,9
+je past_repaint_right_part
+jmp repaint_right_part_loop
+
+past_repaint_right_part:
+sub di,178
+jmp pre_repaint_right_part
+
+exit_from_right_part:
+ret
+endp
+;repaint car location
+PROC repaint_car_location_proc
+mov di,0CBCh
+
+pre_repaint_car_location_loop:
+cmp di,60
+jle exit_from_car_location_proc
+xor cx,cx
+mov si,di
+sub si,160
+jmp repaint_car_location_loop
+
+repaint_car_location_loop:
+mov ax,es:[si]
+mov es:[di],ax
+add di,2
+add si,2
+inc cx
+cmp cx,9
+je miss_car_location_line
+cmp cx,21
+je past_repaint_car_location_loop
+jmp repaint_car_location_loop
+
+miss_car_location_line:
+add cx,3
+add di,6
+add si,6
+jmp repaint_car_location_loop
+
+past_repaint_car_location_loop:
+sub di,202
+jmp pre_repaint_car_location_loop
+
+exit_from_car_location_proc:
+ret
+
+endp
+
+PROC repaint_line
+
+pre_repaint_map:
+xor di,di
+xor ax,ax
+mov di,80
+mov ax,es:[di]
+add di,160
+jmp line_pause
+
+line_pause:
+inc pause_point
+cmp pause_point,43000
+jne line_pause
+mov pause_point,0
+jmp repaint_map
+
+repaint_map:
+mov bx,es:[di]
+mov es:[di],ax
+mov ax,bx
+add di,160
+cmp di,0F50h
+jg last_repaint
+jmp repaint_map
+
+last_repaint:
+mov di,80
+mov es:[di],bx
+ret
+endp
+
+
+end start
+
+;СОДЕРЖАНИЕ:
+;1.Главная метка - main_loop(105-120)
+;2.Метка Draw - контроль за отрисовкой(121-126)
+;3.Метки отрисовки пространства вне машины, которые вызывают процедуры отрисовки(129-150)
+;4.Метка go_right - движение машинки вправо(154-261)
+;Можно было перерисовывать машинку по блокам, но отрисовка идет только частей машинки
+;без пробелов. Как итог: больше кода, быстрее работа.
+;5.go_left: (263-370)
+;6.exit (371-380)
+;ПРОЦЕДУРЫ:
+;1.Процедура инкремента флага добавления: машинка отрисовывается через 7 шагов(промежутки между
+;машинками 7 линий)(381-407)
+;2.Процедура выбора генерации машинки слева/справа(408-427)
+;3.Обнуление счетчиков секций машины для их рисования(в машине 4 секции)(429-459)
+;4.Управление отрисовкой машинки справа(461-497)
+;5.Отрисовка секций машинки(501-594)(неск процедур)
+;6.Уарпвление отрисовкой машинки слева(595-632)
+;7.Отрисовка машинки слева(638-730)
+;8.Отрисовка очков игрока(733-761)
+;9.Перевод числа в строку(763-798)
+;10.Перерисовка правого куска дороги(машинка находится слева)(800-827)
+;11.Перерисовка левого куска  дороги(машинка находится справа)(831-858)
+;12.Перерисовка основной части дороги(860-896)
+;13.Перерисовка центральной линии разметки(898-928)
+
+
+
+
+; [SOURCE]: D:\УЧЁБА\БГУИР\4 СЕМ\КПиЯП\Labs\L4\L4_realise.asm
