@@ -1,0 +1,407 @@
+EMU8086 GENERATED LISTING. MACHINE CODE <- SOURCE.
+ 
+L3.exe -- emu8086 assembler version: 4.08  
+ 
+[ 11.03.2017  --  13:51:12 ] 
+ 
+===================================================================================================
+[LINE]     LOC: MACHINE CODE                          SOURCE
+===================================================================================================
+ 
+[   1]        :                                       number_syst equ 10
+[   2]        :                                       max_number equ 32767
+[   3]        :                                       .model
+[   4]        :                                       .stack 100h
+[   5]        :                                       .data
+[   6]    0100: 00 00 00 00 00 00 00 00 00 00 00 00   mas dw 10 dup(?)
+                00 00 00 00 00 00 00 00             
+[   7]    0114: 00 00 00 00 00 00 00 00 00            num db 9 dup(?)
+[   8]    011D: 00 00 00 00 00 00 00 00 00 00 00 00   res_str db 212 dup(?)
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00 00 00 00 00 
+                00 00 00 00 00 00 00 00             
+[   9]    01F1: 00 00 00 00 00                        max_index db 5 dup(?)
+[  10]    01F6: 00 00 00 00 00 00 00 00 00            max_num db 9 dup(?)
+[  11]        :                                       
+[  12]    01FF: 50 6C 65 61 73 65 21 49 6E 70 75 74   input_line db "Please!Input number!",10,13,'$'
+                20 6E 75 6D 62 65 72 21 0A 0D 24    
+[  13]    0216: 45 72 72 6F 72 21 52 65 70 65 61 74   error_mes db "Error!Repeat input!",10,13,'$'
+                20 69 6E 70 75 74 21 0A 0D 24       
+[  14]    022C: 53 74 61 72 74 20 6C 69 6E 65 3A 0A   start_line db "Start line:",10,13,'$'
+                0D 24                               
+[  15]    023A: 4E 75 6D 62 65 72 3A 24               num_mes db "Number:",'$'
+[  16]    0242: 43 6F 75 6E 74 65 72 3A 24            count_mes db "Counter:",'$'
+[  17]    024B: 4D 61 73 73 69 76 3A 24               output_mas db "Massiv:",'$'
+[  18]    0253: 0A 0D 24                              transp db 10,13,'$'
+[  19]        :                                       
+[  20]    0256: 00 00                                 flag dw 0
+[  21]        :                                       
+[  22]        :                                       
+[  23]        :                                       cout MACRO input_line
+[  24]        :                                       lea dx,input_line             ;адрес начала строки input_line в dx
+[  25]        :                                       mov ah,09h                    ;вывод строки
+[  26]        :                                       int 21h
+[  27]        :                                       endm
+[  28]        :                                       
+[  29]        :                                       cin MACRO num
+[  30]        :                                       mov num[0],7
+[  31]        :                                       lea dx,num
+[  32]        :                                       mov ah,0Ah
+[  33]        :                                       int 21h
+[  34]        :                                       
+[  35]        :                                       xor bx,bx
+[  36]        :                                       mov bl,num[1]
+[  37]        :                                       add bl,2
+[  38]        :                                       mov num[bx],'$'
+[  39]        :                                       endm
+[  40]        :                                       
+[  41]        :                                       .code
+[  42]        :                                       
+[  43]    0260:                                       start:
+[  44]    0260: B8 10 00                              mov ax,@data
+[  45]    0263: 8E D8                                 mov ds,ax
+[  46]        :                                       
+[  47]    0265: BE 00 00                              lea si,mas
+[  48]    0268: C6 04 08                              mov [si],8                    ;в 0 ячейку ставим размер массива
+[  49]        :                                       
+[  50]    026B:                                       mas_input:
+[  51]    026B: E8 5E 01                              call input                    ;процедура инициализации массива
+[  52]    026E: EB FB                                 jmp mas_input                 ;беск переход, пока не сработает jmp внутри процедуры
+[  53]        :                                       
+[  54]    0270:                                       end_input:                          ;метка конца ввода массива
+[  55]        :                                       
+[  56]    0270: 8B 0E 02 00                           mov cx,mas[2]                 ;в cx кол-во итераций цикла = кол-ву элементов массива
+[  57]    0274: 51                                    push cx                       ;сохраняем в стеке
+[  58]    0275: 33 FF                                 xor di,di                     ;счетчик повторений элемента
+[  59]    0277: BE 00 00                              lea si,mas                    ;индекс элемента с которым сравниваем
+[  60]    027A: 83 C6 04                              add si,4
+[  61]    027D: 56                                    push si                       ;сохраняем в стеке
+[  62]        :                                       
+[  63]        :                                       
+[  64]    027E:                                       pre_cycle:
+[  65]    027E: 5E                                    pop si                        ;перед меткой-циклом для следующего цикла(цикл проверки следующих элементов)
+[  66]    027F: 83 C6 02                              add si,2                      ;указываем индекс следующего элемента для сравнения
+[  67]        :                                       
+[  68]    0282: 59                                    pop cx                        ;счетчик проверяем на нуль(если дошли до конца массива и проверили все элементы)
+[  69]    0283: 83 F9 00                              cmp cx,0
+[  70]    0286: 74 2D                                 je end_prog
+[  71]    0288: 49                                    dec cx                        ;иначе уменьшаем кол-во итераций последующего цикла
+[  72]    0289: 51                                    push cx                       ;сохраняем значение в стеке
+[  73]    028A: 41                                    inc cx                        ;увеличиваем cx на 1 для текущего цикла
+[  74]    028B: 56                                    push si                       ;сохраняем индекс след. элемента
+[  75]    028C: 83 EE 02                              sub si,2                      ;и ставим индекс обратно на предыдущий
+[  76]    028F: 8B 14                                 mov dx,[si]                   ;в dx значение элемента с которым сравниваем
+[  77]    0291: 33 DB                                 xor bx,bx                     ;в bx будем сохранять кол-во повторений элемента
+[  78]        :                                       
+[  79]    0293:                                       cycle:
+[  80]    0293: 83 F9 00                              cmp cx,0                      ;если cx нуль то выходим
+[  81]    0296: 74 0A                                 je after_cycle
+[  82]    0298: 3B 14                                 cmp dx,[si]                   ;если нашли такой же элемент
+[  83]    029A: 74 12                                 je increm                     ;то инкрементируем счетчик
+[  84]    029C: 83 C6 02                              add si,2                      ;переход к след элему
+[  85]    029F: 49                                    dec cx                        ;уменьшение счетчика итераций
+[  86]    02A0: EB F1                                 jmp cycle
+[  87]        :                                       
+[  88]    02A2:                                       after_cycle:
+[  89]    02A2: 3B DF                                 cmp bx,di                     ;сравниваем кол-во повторений с максимальным
+[  90]    02A4: 7F 02                                 jg set_max_value              ;если оно больше
+[  91]    02A6: EB D6                                 jmp pre_cycle
+[  92]        :                                       
+[  93]    02A8:                                       set_max_value:                      ;запоминаем максимальные значения
+[  94]    02A8: 8B FB                                 mov di,bx                     ;повторений
+[  95]    02AA: 8B C2                                 mov ax,dx                     ;и сам элемент
+[  96]    02AC: EB D0                                 jmp pre_cycle
+[  97]        :                                       
+[  98]    02AE:                                       increm:
+[  99]    02AE: 43                                    inc bx                        ;увеличиваем счетчик повторений
+[ 100]    02AF: 49                                    dec cx                        ;уменьшаем счетчик итераций
+[ 101]    02B0: 83 C6 02                              add si,2                      ;переходим на след элемент
+[ 102]    02B3: EB DE                                 jmp cycle
+[ 103]        :                                       
+[ 104]    02B5:                                       end_prog:
+[ 105]    02B5: E8 A6 00                              call value_output
+[ 106]    02B8: E8 DF 00                              call index_output
+[ 107]    02BB: E8 44 00                              call mas_output
+[ 108]        :                                       
+[ 109]    02BE: BA 53 01 B4 09 CD 21                  cout transp
+[ 110]    02C5: BA 4B 01 B4 09 CD 21                  cout output_mas
+[ 111]    02CC: BA 1F 00 B4 09 CD 21                  cout res_str[2]
+[ 112]    02D3: BA 53 01 B4 09 CD 21                  cout transp
+[ 113]    02DA: BA 3A 01 B4 09 CD 21                  cout num_mes
+[ 114]    02E1: BA F8 00 B4 09 CD 21                  cout max_num[2]
+[ 115]    02E8: BA 53 01 B4 09 CD 21                  cout transp
+[ 116]    02EF: BA 42 01 B4 09 CD 21                  cout count_mes
+[ 117]    02F6: BA F3 00 B4 09 CD 21                  cout max_index[2]
+[ 118]        :                                       
+[ 119]    02FD: B8 00 4C                              mov ax,4C00h
+[ 120]    0300: CD 21                                 int 21h
+[ 121]        :                                       
+[ 122]    0302:                                       mas_output PROC
+[ 123]        :                                       
+[ 124]    0302: BF 00 00                              lea di,mas                    ;адрес нулевого элема
+[ 125]    0305: 83 C7 02                              add di,2
+[ 126]    0308: BE 1D 00                              lea si,res_str                ;адрес нулевого элема строки
+[ 127]    030B: 33 C9                                 xor cx,cx                     ;сброс счетчика
+[ 128]    030D: C6 04 D2                              mov [si],210
+[ 129]    0310: 46                                    inc si
+[ 130]    0311: C6 04 00                              mov [si],0
+[ 131]    0314: 46                                    inc si
+[ 132]    0315: BB 0A 00                              mov bx,10
+[ 133]        :                                       
+[ 134]        :                                       
+[ 135]    0318:                                       pre_div:
+[ 136]    0318: 51                                    push cx
+[ 137]    0319: 33 D2                                 xor dx,dx
+[ 138]    031B: 33 C9                                 xor cx,cx
+[ 139]    031D: 83 C7 02                              add di,2                      ;перемещаем di по элементам массива
+[ 140]    0320: 8B 05                                 mov ax,[di]                   ;div работает с ax
+[ 141]    0322: 3D FF 7F                              cmp ax, max_number
+[ 142]    0325: 76 0B                                 jbe divv_
+[ 143]    0327: 48                                    dec ax                        ;если число отриц то инвертируем его
+[ 144]    0328: F7 D0                                 not ax
+[ 145]    032A: C6 04 2D                              mov [si], '-'                 ;заносим минус
+[ 146]    032D: FE 06 1E 00                           inc res_str[1]                ;кол-во элементов строки увеличиваем
+[ 147]    0331: 46                                    inc si
+[ 148]        :                                       
+[ 149]    0332:                                       divv_:
+[ 150]    0332: F7 F3                                 div bx                        ;ax/10
+[ 151]    0334: 41                                    inc cx
+[ 152]    0335: FE 06 1E 00                           inc res_str[1]
+[ 153]    0339: 52                                    push dx                       ;число в стек
+[ 154]    033A: 33 D2                                 xor dx,dx
+[ 155]    033C: 3D 00 00                              cmp ax,0                      ;делим до нуля и переход
+[ 156]    033F: 74 02                                 je write_cycl
+[ 157]    0341: EB EF                                 jmp divv_
+[ 158]        :                                       
+[ 159]    0343:                                       write_cycl:
+[ 160]    0343: 5A                                    pop dx                        ;достаем из стека
+[ 161]    0344: 83 C2 30                              add dx,30h                    ;получаем аски код
+[ 162]    0347: 88 14                                 mov [si],dl                   ;помещаем в результ строку
+[ 163]    0349: 46                                    inc si
+[ 164]    034A: E2 F7                                 loop write_cycl
+[ 165]        :                                       
+[ 166]    034C: 59                                    pop cx                        ;достаем из стека счетчик записанных числе
+[ 167]    034D: 41                                    inc cx
+[ 168]    034E: 3B 0E 02 00                           cmp cx,mas[2]                 ;сравниваем его с кол-вом чисел в массиве
+[ 169]    0352: 74 06                                 je set_ret
+[ 170]        :                                       
+[ 171]    0354: C6 04 20                              mov [si],' '                  ;после каждого числа ставим пробел
+[ 172]    0357: 46                                    inc si
+[ 173]    0358: EB BE                                 jmp pre_div
+[ 174]        :                                       
+[ 175]    035A:                                       set_ret:                            ;если чисел больше нет, то в конце строки ставим '$'
+[ 176]    035A: C6 04 24                              mov [si],'$'
+[ 177]    035D: C3                                    ret
+[ 178]        :                                       
+[ 179]        :                                       mas_output endp
+[ 180]        :                                       
+[ 181]    035E:                                       value_output PROC
+[ 182]        :                                       
+[ 183]    035E: BE F6 00                              lea si,max_num
+[ 184]    0361: C6 04 07                              mov [si],7
+[ 185]    0364: 33 D2                                 xor dx,dx
+[ 186]    0366: 33 C9                                 xor cx,cx
+[ 187]    0368: 46                                    inc si
+[ 188]    0369: C6 04 00                              mov [si],0
+[ 189]    036C: 46                                    inc si
+[ 190]    036D: BB 0A 00                              mov bx,10
+[ 191]    0370: 3D FF 7F                              cmp ax, max_number
+[ 192]    0373: 76 07                                 jbe divis_
+[ 193]    0375: 48                                    dec ax
+[ 194]    0376: F7 D0                                 not ax
+[ 195]    0378: C6 04 2D                              mov [si], '-'
+[ 196]    037B: 46                                    inc si
+[ 197]        :                                       
+[ 198]    037C:                                       divis_:
+[ 199]    037C: F7 F3                                 div bx
+[ 200]    037E: 41                                    inc cx
+[ 201]    037F: FE 06 F7 00                           inc max_num[1]
+[ 202]    0383: 52                                    push dx
+[ 203]    0384: 33 D2                                 xor dx,dx
+[ 204]    0386: 3D 00 00                              cmp ax,0
+[ 205]    0389: 74 02                                 je write_cyc
+[ 206]    038B: EB EF                                 jmp divis_
+[ 207]        :                                       
+[ 208]    038D:                                       write_cyc:
+[ 209]    038D: 5A                                    pop dx
+[ 210]    038E: 83 C2 30                              add dx,30h
+[ 211]    0391: 88 14                                 mov [si],dl
+[ 212]    0393: 46                                    inc si
+[ 213]    0394: E2 F7                                 loop write_cyc
+[ 214]        :                                       
+[ 215]    0396: C6 04 24                              mov [si],'$'
+[ 216]        :                                       
+[ 217]    0399: C3                                    ret
+[ 218]        :                                       
+[ 219]        :                                       value_output endp
+[ 220]        :                                       
+[ 221]        :                                       
+[ 222]    039A:                                       index_output PROC
+[ 223]    039A: BE F1 00                              lea si,max_index
+[ 224]    039D: C6 04 03                              mov [si],3
+[ 225]    03A0: 8B C7                                 mov ax,di
+[ 226]    03A2: 33 D2                                 xor dx,dx
+[ 227]    03A4: 33 C9                                 xor cx,cx
+[ 228]    03A6: 46                                    inc si
+[ 229]    03A7: C6 04 00                              mov [si],0
+[ 230]    03AA: 46                                    inc si
+[ 231]    03AB: BB 0A 00                              mov bx,10
+[ 232]        :                                       
+[ 233]    03AE:                                       div_:
+[ 234]    03AE: F7 F3                                 div bx
+[ 235]    03B0: 41                                    inc cx
+[ 236]    03B1: FE 06 F2 00                           inc max_index[1]
+[ 237]    03B5: 52                                    push dx
+[ 238]    03B6: 33 D2                                 xor dx,dx
+[ 239]    03B8: 3D 00 00                              cmp ax,0
+[ 240]    03BB: 74 02                                 je write_cycle
+[ 241]    03BD: EB EF                                 jmp div_
+[ 242]        :                                       
+[ 243]    03BF:                                       write_cycle:
+[ 244]    03BF: 5A                                    pop dx
+[ 245]    03C0: 83 C2 30                              add dx,30h
+[ 246]    03C3: 88 14                                 mov [si],dl
+[ 247]    03C5: 46                                    inc si
+[ 248]    03C6: E2 F7                                 loop write_cycle
+[ 249]        :                                       
+[ 250]    03C8: C6 04 24                              mov [si],'$'
+[ 251]        :                                       
+[ 252]    03CB: C3                                    ret
+[ 253]        :                                       index_output endp
+[ 254]        :                                       
+[ 255]    03CC:                                       input PROC                          ;процедура ввода массива
+[ 256]    03CC: 33 F6                                 xor si,si                     ;индексация по массиву
+[ 257]    03CE: 83 C6 04                              add si,4                      ;ставим на ячейку, где начинаются числа
+[ 258]    03D1: 03 36 02 00                           add si,mas[2]                 ;добавляем кол-во введенных элементов*2(т.к два байта)
+[ 259]    03D5: 03 36 02 00                           add si,mas[2]                 ;чтобы не вводить каждый раз один и тот же
+[ 260]    03D9: 56                                    push si                       ; в итоге получим позицию для ввода числа(сохраняем ее в стек)
+[ 261]    03DA: BA FF 00 B4 09 CD 21                  cout input_line
+[ 262]    03E1: C7 06 56 01 00 00                     mov flag,0                    ;обнуляем флаг отрицательного числа
+[ 263]    03E7: C6 06 14 00 07 BA 14 00 B4 0A CD 21   cin num                       ;ввод числа
+                33 DB 8A 1E 15 00 80 C3 02 C6 47 14 
+                24                                  
+[ 264]    0400: 33 F6                                 xor si,si
+[ 265]    0402: BE 02 00                              mov si,2
+[ 266]        :                                       
+[ 267]    0405: 80 7C 14 2D                           cmp num[si],'-'               ;проверяем знак числа
+[ 268]    0409: 75 09                                 jne check_input               ;если не минус
+[ 269]    040B: C7 06 56 01 01 00                     mov flag,1                    ;если минус то флаг в 1
+[ 270]    0411: 46                                    inc si                        ;пропускаем '-'
+[ 271]    0412: EB 00                                 jmp check_input
+[ 272]        :                                       
+[ 273]        :                                       
+[ 274]    0414:                                       check_input:
+[ 275]    0414: 80 7C 14 24                           cmp num[si],'$'
+[ 276]    0418: 74 0F                                 je pre_transparent_num
+[ 277]    041A: 80 7C 14 30                           cmp num[si],'0'
+[ 278]    041E: 7C 5C                                 jl error
+[ 279]    0420: 80 7C 14 39                           cmp num[si],'9'
+[ 280]    0424: 7F 56                                 jg error
+[ 281]    0426: 46                                    inc si
+[ 282]    0427: EB EB                                 jmp check_input
+[ 283]        :                                       
+[ 284]    0429:                                       pre_transparent_num:
+[ 285]    0429: 33 F6                                 xor si,si
+[ 286]    042B: 33 C9                                 xor cx,cx
+[ 287]    042D: 33 DB                                 xor bx,bx
+[ 288]    042F: 33 C0                                 xor ax,ax
+[ 289]    0431: 8A 0E 15 00                           mov cl,num[1]                  ;устанавливаем в счетчик длину числа,для цикла
+[ 290]    0435: 2B 0E 56 01                           sub cx,flag                    ;отнимаем флаг(если отриц число, то пропустим минус)
+[ 291]    0439: BE 02 00                              mov si,2
+[ 292]    043C: 03 36 56 01                           add si,flag                    ;пропускаем знак '-' если он есть
+[ 293]    0440: B3 0A                                 mov bl,number_syst             ;в bl сохраняем систему счисления
+[ 294]        :                                       
+[ 295]        :                                       
+[ 296]    0442:                                       transparent_num:
+[ 297]    0442: F7 E3                                 mul bx                         ;умножаем ах на 10
+[ 298]    0444: 8A 54 14                              mov dl,num[si]
+[ 299]    0447: 80 EA 30                              sub dl,30h                     ;получаем число в чистом виде
+[ 300]    044A: 03 C2                                 add ax,dx                      ;добавляем в аккумулятор
+[ 301]    044C: 46                                    inc si
+[ 302]    044D: 3D FF 7F                              cmp ax,max_number              ;если переполнение
+[ 303]    0450: 70 2A                                 jo error
+[ 304]    0452: E2 EE                                 loop transparent_num
+[ 305]        :                                       
+[ 306]    0454: 83 3E 56 01 00                        cmp flag,0                     ;если флаг не нуль, то инвертируем число и добавляем 1(доп код)
+[ 307]    0459: 74 03                                 je save_num
+[ 308]    045B: F7 D0                                 not ax
+[ 309]    045D: 40                                    inc ax
+[ 310]        :                                       
+[ 311]    045E:                                       save_num:
+[ 312]    045E: 5E                                    pop si                         ;получаем индекс элемента для сохранения
+[ 313]    045F: FF 06 02 00                           inc mas[2]                     ;увеличиваем счетчик введенных элементов массива
+[ 314]    0463: 89 04                                 mov mas[si],ax                 ;запоминаем
+[ 315]    0465: 33 D2                                 xor dx,dx
+[ 316]    0467: 8B 16 00 00                           mov dx,mas[0]                  ;сравниваем уже введенные с макс. возм кол-вом для ввода
+[ 317]    046B: 3B 16 02 00                           cmp dx,mas[2]
+[ 318]    046F: 7F 03 E9 FC FD                        jle end_input
+[ 319]    0474: BA 53 01 B4 09 CD 21                  cout transp
+[ 320]    047B: C3                                    ret
+[ 321]        :                                       
+[ 322]    047C:                                       error:
+[ 323]    047C: BA 53 01 B4 09 CD 21                  cout transp
+[ 324]    0483: BA 16 01 B4 09 CD 21                  cout error_mes
+[ 325]    048A: E9 DE FD                              jmp mas_input
+[ 326]        :                                       
+[ 327]        :                                       input endp
+[ 328]        :                                       end start
+[ 329]        :                                       
+ 
+===================================================================================================
+ 
+EXE HEADER - bytes from 0000 to 01FF inclusive.
+
+0000: 4D      -   exe signature (M)
+0001: 5A      -   exe signature (Z)
+0002: 8D      -   bytes on last page (l.byte)
+0003: 00      -   bytes on last page (h.byte)
+0004: 04      -   512 byte pages in file (l.byte)
+0005: 00      -   512 byte pages in file (h.byte)
+0006: 01      -   relocations (l.byte)
+0007: 00      -   relocations (h.byte)
+0008: 20      -   paragraphs in header (l.byte)
+0009: 00      -   paragraphs in header (h.byte)
+000A: 00      -   minimum memory (l.byte)
+000B: 00      -   minimum memory (h.byte)
+000C: FF      -   maximum memory (l.byte)
+000D: FF      -   maximum memory (h.byte)
+000E: 00      -   SS - stack segment (l.byte)
+000F: 00      -   SS - stack segment (h.byte)
+0010: 00      -   SP - stack pointer (l.byte)
+0011: 01      -   SP - stack pointer (h.byte)
+0012: 68      -   check sum (l.byte)
+0013: 10      -   check sum (h.byte)
+0014: 00      -   IP - instruction pointer (l.byte)
+0015: 00      -   IP - instruction pointer (h.byte)
+0016: 26      -   CS - code segment (l.byte)
+0017: 00      -   CS - code segment (h.byte)
+0018: 1E      -   relocation table adress (l.byte)
+0019: 00      -   relocation table adress (h.byte)
+001A: 00      -   overlay number (l.byte)
+001B: 00      -   overlay number (h.byte)
+001C: 01      -   signature (l.byte)
+001D: 00      -   signature (h.byte)
+001E: 01      -   relocation table - offset inside segment (l.byte)
+001F: 00      -   relocation table - offset inside segment (h.byte)
+0020: 26      -   relocation table - segment anchor (l.byte)
+0021: 00      -   relocation table - segment anchor (h.byte)
+0022 to 01FF  -   reserved relocation area  (00) 
+
+
+
+
+===================================================================================================

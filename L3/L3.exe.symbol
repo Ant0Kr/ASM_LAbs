@@ -1,0 +1,50 @@
+< THE SYMBOL TABLE >  L3.exe  --  emu8086 assembler version: 4.08 
+===================================================================================================
+Name                     	Offset    	Size      	Type      	Segment   
+===================================================================================================
+STACK                    	00000     	-5        	SEGMENT   	(ITSELF)  
+DATA                     	00010     	-5        	SEGMENT   	(ITSELF)  
+MAS                      	00000     	2         	VAR       	data      
+NUM                      	00014     	1         	VAR       	data      
+RES_STR                  	0001D     	1         	VAR       	data      
+MAX_INDEX                	000F1     	1         	VAR       	data      
+MAX_NUM                  	000F6     	1         	VAR       	data      
+INPUT_LINE               	000FF     	1         	VAR       	data      
+ERROR_MES                	00116     	1         	VAR       	data      
+START_LINE               	0012C     	1         	VAR       	data      
+NUM_MES                  	0013A     	1         	VAR       	data      
+COUNT_MES                	00142     	1         	VAR       	data      
+OUTPUT_MAS               	0014B     	1         	VAR       	data      
+TRANSP                   	00153     	1         	VAR       	data      
+FLAG                     	00156     	2         	VAR       	data      
+CODE                     	00026     	-5        	SEGMENT   	(ITSELF)  
+START                    	00000     	-1        	LABEL     	code      
+MAS_INPUT                	0000B     	-1        	LABEL     	code      
+END_INPUT                	00010     	-1        	LABEL     	code      
+PRE_CYCLE                	0001E     	-1        	LABEL     	code      
+CYCLE                    	00033     	-1        	LABEL     	code      
+AFTER_CYCLE              	00042     	-1        	LABEL     	code      
+SET_MAX_VALUE            	00048     	-1        	LABEL     	code      
+INCREM                   	0004E     	-1        	LABEL     	code      
+END_PROG                 	00055     	-1        	LABEL     	code      
+MAS_OUTPUT               	000A2     	-1        	NEAR      	code      
+PRE_DIV                  	000B8     	-1        	LABEL     	code      
+DIVV_                    	000D2     	-1        	LABEL     	code      
+WRITE_CYCL               	000E3     	-1        	LABEL     	code      
+SET_RET                  	000FA     	-1        	LABEL     	code      
+VALUE_OUTPUT             	000FE     	-1        	NEAR      	code      
+DIVIS_                   	0011C     	-1        	LABEL     	code      
+WRITE_CYC                	0012D     	-1        	LABEL     	code      
+INDEX_OUTPUT             	0013A     	-1        	NEAR      	code      
+DIV_                     	0014E     	-1        	LABEL     	code      
+WRITE_CYCLE              	0015F     	-1        	LABEL     	code      
+INPUT                    	0016C     	-1        	NEAR      	code      
+CHECK_INPUT              	001B4     	-1        	LABEL     	code      
+PRE_TRANSPARENT_NUM      	001C9     	-1        	LABEL     	code      
+TRANSPARENT_NUM          	001E2     	-1        	LABEL     	code      
+SAVE_NUM                 	001FE     	-1        	LABEL     	code      
+ERROR                    	0021C     	-1        	LABEL     	code      
+===================================================================================================
+[ 11.03.2017  --  13:51:12 ] 
+< END >
+ 

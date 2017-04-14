@@ -1,0 +1,342 @@
+number_syst equ 10       
+max_number equ 32767
+.model
+.stack 100h
+.data
+      mas dw 10 dup(?)
+      num db 9 dup(?)
+      res_str db 212 dup(?)
+      max_index db 5 dup(?)
+      max_num db 9 dup(?)
+       
+      input_line db "Please!Input number!",10,13,'$' 
+      error_mes db "Error!Repeat input!",10,13,'$'
+      start_line db "Start line:",10,13,'$' 
+      num_mes db "Number:",'$'
+      count_mes db "Counter:",'$'
+      output_mas db "Massiv:",'$'
+      transp db 10,13,'$'
+      
+      flag dw 0
+      
+
+cout MACRO input_line
+      lea dx,input_line             ;адрес начала строки input_line в dx
+      mov ah,09h                    ;вывод строки
+      int 21h
+endm
+
+cin MACRO num                        
+      mov num[0],7
+      lea dx,num
+      mov ah,0Ah
+      int 21h
+      
+      xor bx,bx
+      mov bl,num[1]
+      add bl,2
+      mov num[bx],'$'
+endm
+
+.code
+
+start:
+      mov ax,@data
+      mov ds,ax
+      
+      lea si,mas 
+      mov [si],8                    ;в 0 ячейку ставим размер массива     
+         
+mas_input:                          
+      call input                    ;процедура инициализации массива
+      jmp mas_input                 ;беск переход, пока не сработает jmp внутри процедуры
+
+end_input:                          ;метка конца ввода массива
+      
+      mov cx,mas[2]                 ;в cx кол-во итераций цикла = кол-ву элементов массива
+      push cx                       ;сохраняем в стеке
+      xor di,di                     ;счетчик повторений элемента
+      lea si,mas                    ;индекс элемента с которым сравниваем
+      add si,4
+      push si                       ;сохраняем в стеке
+       
+      
+pre_cycle:                          
+      pop si                        ;перед меткой-циклом для следующего цикла(цикл проверки следующих элементов)
+      add si,2                      ;указываем индекс следующего элемента для сравнения
+      
+      pop cx                        ;счетчик проверяем на нуль(если дошли до конца массива и проверили все элементы)
+      cmp cx,0
+      je end_prog
+      dec cx                        ;иначе уменьшаем кол-во итераций последующего цикла
+      push cx                       ;сохраняем значение в стеке
+      inc cx                        ;увеличиваем cx на 1 для текущего цикла
+      push si                       ;сохраняем индекс след. элемента
+      sub si,2                      ;и ставим индекс обратно на предыдущий
+      mov dx,[si]                   ;в dx значение элемента с которым сравниваем
+      xor bx,bx                     ;в bx будем сохранять кол-во повторений элемента
+            
+cycle:
+      cmp cx,0                      ;если cx нуль то выходим
+      je after_cycle
+      cmp dx,[si]                   ;если нашли такой же элемент
+      je increm                     ;то инкрементируем счетчик
+      add si,2                      ;переход к след элему
+      dec cx                        ;уменьшение счетчика итераций
+      jmp cycle
+            
+after_cycle:
+      cmp bx,di                     ;сравниваем кол-во повторений с максимальным
+      jg set_max_value              ;если оно больше
+      jmp pre_cycle
+      
+set_max_value:                      ;запоминаем максимальные значения
+      mov di,bx                     ;повторений
+      mov ax,dx                     ;и сам элемент
+      jmp pre_cycle
+      
+increm:
+      inc bx                        ;увеличиваем счетчик повторений
+      dec cx                        ;уменьшаем счетчик итераций
+      add si,2                      ;переходим на след элемент
+      jmp cycle          
+
+end_prog:              
+      call value_output
+      call index_output
+      call mas_output 
+         
+      cout transp
+      cout output_mas
+      cout res_str[2]
+      cout transp
+      cout num_mes
+      cout max_num[2]
+      cout transp
+      cout count_mes
+      cout max_index[2]
+      
+      mov ax,4C00h
+      int 21h
+      
+mas_output PROC
+ 
+      lea di,mas                    ;адрес нулевого элема
+      add di,2                      
+      lea si,res_str                ;адрес нулевого элема строки
+      xor cx,cx                     ;сброс счетчика
+      mov [si],210                  
+      inc si
+      mov [si],0
+      inc si
+      mov bx,10
+      
+
+pre_div:
+      push cx
+      xor dx,dx 
+      xor cx,cx
+      add di,2                      ;перемещаем di по элементам массива
+      mov ax,[di]                   ;div работает с ax
+      cmp ax, max_number
+      jbe divv_
+      dec ax                        ;если число отриц то инвертируем его
+      not ax
+      mov [si], '-'                 ;заносим минус
+      inc res_str[1]                ;кол-во элементов строки увеличиваем
+      inc si   
+      
+divv_:
+      div bx                        ;ax/10
+      inc cx
+      inc res_str[1]
+      push dx                       ;число в стек
+      xor dx,dx
+      cmp ax,0                      ;делим до нуля и переход
+      je write_cycl
+      jmp divv_ 
+      
+write_cycl:
+      pop dx                        ;достаем из стека
+      add dx,30h                    ;получаем аски код
+      mov [si],dl                   ;помещаем в результ строку
+      inc si
+      loop write_cycl
+      
+      pop cx                        ;достаем из стека счетчик записанных числе
+      inc cx
+      cmp cx,mas[2]                 ;сравниваем его с кол-вом чисел в массиве
+      je set_ret
+      
+      mov [si],' '                  ;после каждого числа ставим пробел
+      inc si 
+      jmp pre_div
+      
+set_ret:                            ;если чисел больше нет, то в конце строки ставим '$'
+      mov [si],'$'
+      ret   
+                     
+mas_output endp 
+
+
+
+
+
+value_output PROC
+      
+      lea si,max_num
+      mov [si],7
+      xor dx,dx 
+      xor cx,cx
+      inc si
+      mov [si],0
+      inc si
+      mov bx,10
+      cmp ax, max_number
+      jbe divis_
+      dec ax
+      not ax
+      mov [si], '-'
+      inc si
+      
+divis_:
+      div bx
+      inc cx
+      inc max_num[1]
+      push dx 
+      xor dx,dx
+      cmp ax,0
+      je write_cyc
+      jmp divis_ 
+      
+write_cyc:
+      pop dx
+      add dx,30h
+      mov [si],dl
+      inc si
+      loop write_cyc
+      
+      mov [si],'$'
+      
+      ret  
+      
+value_output endp      
+
+ 
+ 
+ 
+ 
+ 
+index_output PROC
+      lea si,max_index
+      mov [si],3
+      mov ax,di
+      xor dx,dx 
+      xor cx,cx
+      inc si
+      mov [si],0
+      inc si
+      mov bx,10
+           
+div_:
+      div bx
+      inc cx
+      inc max_index[1]
+      push dx 
+      xor dx,dx
+      cmp ax,0
+      je write_cycle
+      jmp div_ 
+      
+write_cycle:
+      pop dx
+      add dx,30h
+      mov [si],dl
+      inc si
+      loop write_cycle
+      
+      mov [si],'$'
+      
+      ret  
+index_output endp
+
+
+
+
+           
+input PROC                          ;процедура ввода массива
+      xor si,si                     ;индексация по массиву
+      add si,4                      ;ставим на ячейку, где начинаются числа
+      add si,mas[2]                 ;добавляем кол-во введенных элементов*2(т.к два байта)
+      add si,mas[2]                 ;чтобы не вводить каждый раз один и тот же
+      push si                       ; в итоге получим позицию для ввода числа(сохраняем ее в стек)
+      cout input_line
+      mov flag,0                    ;обнуляем флаг отрицательного числа
+      cin num                       ;ввод числа
+      xor si,si
+      mov si,2
+   
+      cmp num[si],'-'               ;проверяем знак числа
+      jne check_input               ;если не минус
+      mov flag,1                    ;если минус то флаг в 1
+      inc si                        ;пропускаем '-'
+      jmp check_input
+      
+      
+check_input:
+      cmp num[si],'$'               
+      je pre_transparent_num
+      cmp num[si],'0'
+      jl error
+      cmp num[si],'9'
+      jg error
+      inc si
+      jmp check_input 
+            
+pre_transparent_num:
+     xor si,si
+     xor cx,cx
+     xor bx,bx
+     xor ax,ax
+     mov cl,num[1]                  ;устанавливаем в счетчик длину числа,для цикла
+     sub cx,flag                    ;отнимаем флаг(если отриц число, то пропустим минус)
+     mov si,2                       
+     add si,flag                    ;пропускаем знак '-' если он есть
+     mov bl,number_syst             ;в bl сохраняем систему счисления
+     
+     
+transparent_num:
+     
+     mul bx                         ;умножаем ах на 10
+     mov dl,num[si]
+     sub dl,30h                     ;получаем число в чистом виде
+     add ax,dx                      ;добавляем в аккумулятор
+     cmp ax,max_number              ;если переполнение
+     ja error
+     inc si
+     
+     loop transparent_num
+     
+     cmp flag,0                     ;если флаг не нуль, то инвертируем число и добавляем 1(доп код)
+     je save_num
+     not ax
+     inc ax
+     
+save_num:                               
+     pop si                         ;получаем индекс элемента для сохранения
+     inc mas[2]                     ;увеличиваем счетчик введенных элементов массива
+     mov mas[si],ax                 ;запоминаем
+     xor dx,dx
+     mov dx,mas[0]                  ;сравниваем уже введенные с макс. возм кол-вом для ввода
+     cmp dx,mas[2]
+     jle end_input
+     cout transp
+     ret
+                 
+error:
+      cout transp
+      cout error_mes
+      jmp mas_input
+       
+input endp          
+end start
