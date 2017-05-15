@@ -1,0 +1,191 @@
+;Лабораторная работа №5 - "Подсчитать число строк в файле в которых есть заданое слово"
+.model small        
+.stack 100h
+.data
+    buffer db 1024 dup(?) 
+    dir db 126 dup(0)
+    line_count dw 0  
+    line_count_str db 9 dup(?)
+    line db 0      
+    searchWord db "lol$"
+    error_open_str db "Error!Error of open $"  
+    error_line_str db "Error!Line is empty! Please input correct value!$"
+    msg_str db "The number lines that contain my word!: $"
+     
+.code  
+
+cout MACRO outputLine                  ; макрос вывода строки на экран
+    mov ah, 09h  
+    lea dx, outputLine
+    int 21h     
+endm   
+
+start:  
+ 
+    mov ax, @data
+    mov ds, ax 
+            
+    lea di, dir         
+    call getComandLine                 ; процедура парсинга командной строки
+       
+    lea dx, dir                        ; путь до открываемого файла
+    mov ah, 3Dh                        ; функция отрытия файла 
+    mov al, 00h                        ; только чтение
+    int 21h   
+    
+    jc error_open                      ; если не отрыли выводим ошибку
+    
+    mov bx,ax 
+    
+read:     
+    mov ah, 3Fh                        ; чтение из файла
+    mov cx, 1024                       ; 1024 байт
+    lea dx, buffer                     ; в массив buffer
+    int 21h 
+    
+    xor si, si                         ;индексация по буферу
+    mov cx, ax                         ;в ах длина строки(реальная)
+    xor di,di
+
+my_loop:  
+      cmp buffer[si],' '              ;если пробел то пропускаем
+      je continue
+      cmp buffer[si],13               ;символ возврата каретки
+      je continue
+      cmp buffer[si],10               ;символ перехода
+      je continue 
+      jmp lets_compare                ;если нашли символ
+
+lets_compare:
+      cmp searchWord[di],'$'         ;смотрим не кончилось ли слово которое ищем
+      je last_compare
+      mov dl,buffer[si]              ;иначе сравниваем его с буфером
+      mov dh,searchWord[di]
+      cmp dl,dh   
+      jne miss_characters            ;если не иквл то пропускаем слово
+      inc si
+      dec cx
+      inc di
+      jmp lets_compare          
+
+miss_characters:                     ;пропуск слова в буфере, которое не равно заданому
+      cmp cx,1                       ;если дошли до конца файла
+      je continue                    ;выход в continue который завершит программу
+      dec cx
+      inc si
+      cmp buffer[si],13              
+      je continue
+      cmp buffer[si],10
+      je continue
+      cmp buffer[si],' '
+      jne miss_characters            ;иначе пропускаем не пробелы
+      xor di,di
+      jmp continue
+      
+last_compare:                        ;если в строке где записано искомое слово пришли на $
+      cmp buffer[si],13              ;инкрементируем счетчик в том случае если после сравнимаего слова нет символов
+      je inc_counter
+      cmp buffer[si],10
+      je inc_counter
+      cmp buffer[si],' '
+      je inc_counter
+      jmp miss_characters           ;иначе пропускаем эти символы
+      
+inc_counter:                        ; инкрементируем счетчик
+      xor di,di
+      inc line_count
+      jmp miss_line                 ; и пропускаем строку в которой найденное слово находится(по заданию)
+      jmp continue
+
+miss_line:
+      inc si
+      cmp cx,1
+      je continue
+      dec cx 
+      cmp buffer[si],13             ;дошли до символа возврата каретки и вышли
+      je continue
+      jmp miss_line
+                     
+continue:    
+    inc si
+    loop my_loop                         ;цикл следования по  памяти(пока сх!=0)
+     
+    cmp ax, 1024                       ; если не совпадает то мы вычитали все из файла(иначе снова читаем)
+    je read 
+     
+   
+    mov ah,3Eh                         ; функция закрытия файла
+    int 21h   
+    
+    lea bx, line_count
+    lea di, line_count_str
+    call iTOstr                        ; перевод числа непустых строк в строку для вывода на экран
+     
+    cout [msg_str] 
+    cout [line_count_str]       
+    
+    jmp exit
+    
+error_open:                            ; ошибка - некорректный путь до файла
+    cout [error_open_str]
+    jmp exit  
+    
+error_line:
+    cout [error_line_str]              ; ошибка - пустая командная строка
+    jmp exit    
+
+exit:  
+    mov ah, 4ch
+    int 21h  
+
+
+
+
+    
+getComandLine PROC                     ; процедура парсинга командной строки
+    xor cx,cx          
+    mov si, 80h
+    mov cl, es:[si]                    ; кол-во символов в командной строке
+    
+    cmp cx, 0
+    je error_line
+    
+    inc si
+cycle:       
+    mov al, es:[si] 
+    cmp al, ' '              ;игнор пробелов перед название файла
+    je next_step 
+    cmp al, 13               ;до энтера работаем
+    je next_step
+    mov [di], al   
+    inc di
+next_step:
+    inc si 
+    loop cycle
+    ret
+endp
+    
+iTOstr PROC                            ; процедура перевода числа в строку
+    mov ax, [bx]
+    mov bx, 10
+    xor cx, cx 
+        
+division:
+    xor dx, dx
+    div bx       
+    push dx
+    inc cx
+    cmp ax, 0
+    jne division
+
+save_in_str:
+    pop dx
+    add dl, 30h
+    mov [di], dl
+    inc di
+    loop save_in_str
+    
+    mov [di], '$'    
+    ret
+endp
+end start

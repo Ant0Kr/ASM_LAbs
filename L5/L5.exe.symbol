@@ -1,0 +1,38 @@
+< THE SYMBOL TABLE >  L5.exe  --  emu8086 assembler version: 4.08 
+===================================================================================================
+Name                     	Offset    	Size      	Type      	Segment   
+===================================================================================================
+STACK                    	00000     	-5        	SEGMENT   	(ITSELF)  
+DATA                     	00010     	-5        	SEGMENT   	(ITSELF)  
+BUFFER                   	00000     	1         	VAR       	data      
+DIR                      	00400     	1         	VAR       	data      
+LINE_COUNT               	0047E     	2         	VAR       	data      
+LINE_COUNT_STR           	00480     	1         	VAR       	data      
+LINE                     	00489     	1         	VAR       	data      
+SEARCHWORD               	0048A     	1         	VAR       	data      
+ERROR_OPEN_STR           	0048E     	1         	VAR       	data      
+ERROR_LINE_STR           	004A3     	1         	VAR       	data      
+MSG_STR                  	004D4     	1         	VAR       	data      
+CODE                     	00060     	-5        	SEGMENT   	(ITSELF)  
+START                    	00000     	-1        	LABEL     	code      
+READ                     	0001B     	-1        	LABEL     	code      
+MY_LOOP                  	0002B     	-1        	LABEL     	code      
+LETS_COMPARE             	0003C     	-1        	LABEL     	code      
+MISS_CHARACTERS          	00052     	-1        	LABEL     	code      
+LAST_COMPARE             	0006C     	-1        	LABEL     	code      
+INC_COUNTER              	0007D     	-1        	LABEL     	code      
+MISS_LINE                	00087     	-1        	LABEL     	code      
+CONTINUE                 	00095     	-1        	LABEL     	code      
+ERROR_OPEN               	000BD     	-1        	LABEL     	code      
+ERROR_LINE               	000C6     	-1        	LABEL     	code      
+EXIT                     	000CF     	-1        	LABEL     	code      
+GETCOMANDLINE            	000D3     	-1        	NEAR      	code      
+CYCLE                    	000E1     	-1        	LABEL     	code      
+NEXT_STEP                	000EF     	-1        	LABEL     	code      
+ITOSTR                   	000F3     	-1        	NEAR      	code      
+DIVISION                 	000FA     	-1        	LABEL     	code      
+SAVE_IN_STR              	00105     	-1        	LABEL     	code      
+===================================================================================================
+[ 18.04.2017  --  19:43:51 ] 
+< END >
+ 
